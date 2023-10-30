@@ -57,43 +57,47 @@ async function handleScraping() {
             return new Promise((resolve) => setTimeout(resolve, ms));
         }
 
-        // await delay(3000); // 10,000 milliseconds = 10 seconds
-        let modalXPath = '/html/body/div[4]/section/div[2]/div[1]/span';
+        await delay(2000); // 10,000 milliseconds = 10 seconds
+        const menu = await page.waitForSelector('#menu_user_d_cr_inplay', {timeout: 300000});
+        await menu.click({timeout: 300000});
+
+        await delay(2000); // 10,000 milliseconds = 10 seconds
+        let firstSideBarXPath = '//*[@id="data_list"]/li[2]/a';
         try {
-            const [modalClose] = await page.$x(modalXPath);
-            await modalClose.click({timeout:300000});
+            const [firstSideBar] = await page.$x(firstSideBarXPath);
+            await firstSideBar.click({timeout:300000});
         } catch (error) {
             console.log(error);
         }
 
-        // await delay(3000); // 10,000 milliseconds = 10 seconds
-        let secModalXPath = '/html/body/div[4]/section/div[1]/div[1]/span';
+        await delay(2000); // 10,000 milliseconds = 10 seconds
+        let secondSideBarXPath = '//*[@id="data_list"]/li[1]/a';
         try {
-            const [secModalClose] = await page.$x(secModalXPath);
-            await secModalClose.click({timeout:300000});
+            const [secondSideBar] = await page.$x(secondSideBarXPath);
+            await secondSideBar.click({timeout:300000});
         } catch (error) {
             console.log(error);
         }
 
-        await page.waitForSelector('#PicLoc_value', {timeout: 300000});
-        await page.type('#PicLoc_value', 'shr');
-        await page.$eval('#from', (element) => {
-            element.value = "10/15/2023";
-        });
+        // await page.waitForSelector('#PicLoc_value', {timeout: 300000});
+        // await page.type('#PicLoc_value', 'shr');
+        // await page.$eval('#from', (element) => {
+        //     element.value = "10/15/2023";
+        // });
 
-        await delay(3000); // 10,000 milliseconds = 10 seconds
-        const endDateField = await page.waitForSelector('#to', {timeout: 300000});
-        await endDateField.click({timeout: 300000});
+        // await delay(3000); // 10,000 milliseconds = 10 seconds
+        // const endDateField = await page.waitForSelector('#to', {timeout: 300000});
+        // await endDateField.click({timeout: 300000});
 
-        await delay(3000); // 10,000 milliseconds = 10 seconds
-        const endDateXPath = '//*[@id="ui-datepicker-div"]/div[3]/table/tbody/tr[1]/td[4]/a';
-        const [end_day] = await page.$x(endDateXPath);
-        await end_day.click({timeout: 300000});
+        // await delay(3000); // 10,000 milliseconds = 10 seconds
+        // const endDateXPath = '//*[@id="ui-datepicker-div"]/div[3]/table/tbody/tr[1]/td[4]/a';
+        // const [end_day] = await page.$x(endDateXPath);
+        // await end_day.click({timeout: 300000});
 
-        await delay(3000); // 10,000 milliseconds = 10 seconds
+        // await delay(3000); // 10,000 milliseconds = 10 seconds
 
-        const findButton = await page.waitForSelector('#res-home-select-car', {timeout: 300000});
-        await findButton.click({timeout: 300000});
+        // const findButton = await page.waitForSelector('#res-home-select-car', {timeout: 300000});
+        // await findButton.click({timeout: 300000});
 
         await delay(3000); // 10,000 milliseconds = 10 seconds
 
