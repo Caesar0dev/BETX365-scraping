@@ -26,34 +26,11 @@ async function handleScraping() {
             return new Promise((resolve) => setTimeout(resolve, ms));
         }
 
-        // login step //
-        // await delay(2000);
-        // userNameXPath = '/html/body/div[1]/div[1]/form/div/input[1]';
-        // const [userName] = await page.$x(userNameXPath);
-        // await userName.type('lotus1')
-
-        // await page.waitForSelector('#password', {timeout: 300000});
-        // await page.type('#password', 'Abcd1234');
-
         await delay(2000); // 10,000 milliseconds = 10 seconds
         const menu = await page.waitForSelector('#menu_user_d_cr_inplay', {timeout: 300000});
         console.log("menu=>", menu);
         await menu.click({timeout: 300000});
         console.log("menu clicked");
-
-        // await delay(3000);
-        // try {
-        //     const aTags = await page.waitForSelector('#data_list li a');
-  
-        //     for (let i = 0; i < aTags.length; i++) {
-        //         const element = aTags[i];
-        //         console.log("Match Title >>> ", element);
-                
-        //     }
-            
-        // } catch (error) {
-        //     console.log(error);
-        // }
 
         await delay(30000); // 10,000 milliseconds = 10 seconds
         try {
