@@ -1,101 +1,28 @@
-const puppeteer = require('puppeteer');
-const csv = require('csv-parser');
 const fs = require('fs');
-const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const e = require("express");
-const io = require('socket.io-client');
+const { Parser } = require('json2csv'); // You may need to install the 'json2csv' package using npm or yarn
 
-async function handleScraping() {
-    async function launchBrowser() {
+const resultFileName = "testResult.csv";
 
-        const browser = await puppeteer.launch({
-            headless: false, // Use the new Headless mode
-            // ... other options
-        });
+for (let i = 0; i < 10; i++) {
+    const data = [
+        {
+            Code: "sea, rchKey" + i,
+            CarName: "carName" + i,
+            Type: "carD, esc" + i,
+        },
+    ];
 
-        // Rest of your code using the browser instance
-        const page = await browser.newPage();
+    const parser = new Parser();
+    const csv = parser.parse(data);
 
-        // Navigate to a page that triggers AJAX requests
-        await page.goto('https://betx365.win/exchange/Match/Inner/4/32743986', {
-            timeout: 300000
-        });
-        console.log("page loaded!");
-        // Delay function
-        function delay(ms) {
-            return new Promise((resolve) => setTimeout(resolve, ms));
-        }
-
-        // login step //
-        // await delay(2000);
-        // userNameXPath = '/html/body/div[1]/div[1]/form/div/input[1]';
-        // const [userName] = await page.$x(userNameXPath);
-        // await userName.type('lotus1')
-
-        // await page.waitForSelector('#password', {timeout: 300000});
-        // await page.type('#password', 'Abcd1234');
-
-        // await delay(2000); // 10,000 milliseconds = 10 seconds
-        // const menu = await page.waitForSelector('#menu_user_d_cr_inplay', {timeout: 300000});
-        // await menu.click({timeout: 300000});
-        // console.log("menu clicked");
-
-        await delay(2000); // 10,000 milliseconds = 10 seconds
-        try {
-            const premiumButton = await page.waitForSelector('#showSportsBookBtn', {timeout: 300000});
-            await premiumButton.click({timeout: 300000});
-            console.log("Premium button clicked!");
-
-        } catch (error) {
-            console.log(error)
-        }       
-
-        await delay(6000); // 10,000 milliseconds = 10 seconds
-
-        const cdp = await page.target().createCDPSession();
-        await cdp.send('Network.enable');
-        await cdp.send('Page.enable');
-      
-        const printResponse = response => {
-            const requestID = response.requestId;
-            // console.log("receive websocket!", requestID);
-            const socketType = response.response.payloadData;
-            const contentText = socketType.split("[")[1];
-            console.log(">>> ", contentText);
-            console.log('response: ', response);
-            try {
-                if (contentText.indexOf("Premium") > -1) {
-                    console.log("###########################################################################")
-                    const payloadData = response.response.payloadData.replace("42", "");
-                    console.log("payload data : ", payloadData);
-                    const data = JSON.parse(payloadData)[1].data;
-                    console.log("data : ", data);
-                    const json = JSON.stringify(data);
-                    fs.writeFileSync('Result.json', json);
-                    console.log("###########################################################################")
-
-                    // fs.appendFile("Result.json", data, function (err) {
-                    //     if (err) throw err;
-                    //     console.log('Writed!');
-                    // }); 
-                    // fs.writeFileSync('Result.json', data);
-                }
-
-            } catch (error) {
-                console.log(error);
+    const csvDataWithoutHeader = csv.split('\n')[1] + '\n';
+        fs.appendFileSync(resultFileName, csvDataWithoutHeader, 'utf8', (err) => {
+            if (err) {
+                console.error('Error appending to CSV file:', err);
+            } else {
+                console.log('CSV data appended successfully.');
             }
-
-        };
-      
-        cdp.on('Network.webSocketFrameReceived', printResponse); // Fired when WebSocket message is received.
-        cdp.on('Network.webSocketFrameSent', printResponse); // Fired when WebSocket message is sent.
-
-    }
-
-    await launchBrowser()
+        });
 }
 
-// date setting
-handleScraping().then(res => {
-    console.log('handle scraping have done!!')
-})   
+
