@@ -62,9 +62,9 @@ async function handleScraping() {
                                 }
                             })
                             .then(data => {
-                                console.log("Cricket response: ", data);
-
-                                utils.sendToServer(targetURL, data)
+                                // console.log("Cricket response: ", data);
+                                var data1 = {"name": data};
+                                utils.sendToServer(targetURL, data1)
 
                             })
                         console.log("---------------------------------------------------");

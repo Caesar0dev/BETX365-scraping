@@ -5,9 +5,9 @@
 /.pnp
 .pnp.js
 
-#index folder
-/index/node_modules
-/index/package-lock.json
+#scrape folder
+/scrape/node_modules
+/scrape/package-lock.json
 
 # testing
 /coverage
